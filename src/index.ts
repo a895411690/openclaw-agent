@@ -8,6 +8,11 @@ const { schemaValidator } = require('./core/SchemaValidator');
 const { taskRuntime } = require('./core/TaskRuntime');
 const { contextManager } = require('./core/ContextManager');
 
+// Load user customizations (protected from official updates)
+const customModules = require('../custom');
+console.log('[OpenClaw] Custom modules loaded:', Object.keys(customModules).filter(k => k !== 'default'));
+console.log('[OpenClaw] Customizations are protected from updates');
+
 // ============ OpenClawAgent 主类 ============
 
 class OpenClawAgent {

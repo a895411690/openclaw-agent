@@ -41,11 +41,38 @@ tmp/
 temp/
 *.tmp
 
-# Task persistence (optional - remove if you want to commit tasks)
-tasks/
+# ========================================
+# OpenClaw Configuration Protection
+# ========================================
 
-# Output files
+# User Customizations (Protected)
+custom/
+extensions/
+plugins/
+
+# User Data (Protected)
+data/
+tasks/
+learning/
+knowledge/
 output/
+
+# Configuration Files (Protected)
+config/custom-*.json
+config/local-*.yaml
+.env
+.env.local
+.env.*.local
+secrets.json
+
+# Backups (Protected)
+backup/
+*.backup
+*.bak
+
+# ========================================
+# Standard Ignore
+# ========================================
 
 # Claude Code source (large files)
 package/
