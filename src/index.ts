@@ -8,11 +8,6 @@ const { schemaValidator } = require('./core/SchemaValidator');
 const { taskRuntime } = require('./core/TaskRuntime');
 const { contextManager } = require('./core/ContextManager');
 
-// Load user customizations (protected from official updates)
-const customModules = require('../custom');
-console.log('[OpenClaw] Custom modules loaded:', Object.keys(customModules).filter(k => k !== 'default'));
-console.log('[OpenClaw] Customizations are protected from updates');
-
 // ============ OpenClawAgent 主类 ============
 
 class OpenClawAgent {
@@ -28,7 +23,7 @@ class OpenClawAgent {
    * 处理用户输入
    */
   async process(input: string): Promise<{
-    intent: Intent;
+    intent: any;
     plan: string;
     execution?: any;
   }> {
@@ -64,7 +59,7 @@ class OpenClawAgent {
   /**
    * 执行计划
    */
-  private async executePlan(intent: Intent, plan: any): Promise<any> {
+  private async executePlan(intent: any, plan: any): Promise<any> {
     const results: any[] = [];
 
     for (const toolName of plan.tools) {
@@ -103,9 +98,9 @@ class OpenClawAgent {
   createSubagentTask(params: {
     description: string;
     prompt: string;
-    type?: Task['type'];
+    type?: any;
     runInBackground?: boolean;
-  }): Task {
+  }): any {
     return taskRuntime.createTask({
       description: params.description,
       prompt: params.prompt,

@@ -3,25 +3,22 @@
  * 基于 Claude Code 架构的意图识别引擎
  */
 
-const { z } = require('zod');
+
 
 // ============ 类型定义 ============
 
-export const IntentType = z.enum([
-  'research',      // 研究、分析、了解
-  'implement',     // 实现、写、创建
-  'debug',         // 报错、失败、fix
-  'compare',       // 对比、比较
-  'query',         // 查询、获取信息
-  'schedule',      // 安排、约会议
-  'document',      // 文档操作
-  'communicate',   // 沟通、发消息
-  'unknown'
-]);
+type IntentType = 
+  | 'research'
+  | 'implement'
+  | 'debug'
+  | 'compare'
+  | 'query'
+  | 'schedule'
+  | 'document'
+  | 'communicate'
+  | 'unknown';
 
-export type IntentType = z.infer<typeof IntentType>;
-
-export interface Intent {
+interface Intent {
   type: IntentType;
   confidence: number;
   keywords: string[];
@@ -29,7 +26,7 @@ export interface Intent {
   suggestedTools: string[];
 }
 
-export interface ToolChain {
+interface ToolChain {
   tools: string[];
   strategy: 'parallel' | 'sequential' | 'iterative';
   estimatedTime: number;
@@ -37,7 +34,7 @@ export interface ToolChain {
 
 // ============ 意图识别模式 ============
 
-const IntentPatterns: Record<IntentType, RegExp[]> = {
+const IntentPatterns: Record<string, RegExp[]> = {
   research: [
     /研究|分析|了解|看看|查一下|调研/,
     /什么是|怎么样|如何|为什么/,
@@ -71,7 +68,7 @@ const IntentPatterns: Record<IntentType, RegExp[]> = {
 
 // ============ 工具链映射 ============
 
-const ToolChainMap: Record<IntentType, ToolChain> = {
+const ToolChainMap: Record<string, ToolChain> = {
   research: {
     tools: ['web_search', 'web_fetch', 'memory_search'],
     strategy: 'parallel',
@@ -121,7 +118,7 @@ const ToolChainMap: Record<IntentType, ToolChain> = {
 
 // ============ IntentEngine 类 ============
 
-export class IntentEngine {
+class IntentEngine {
   private context: Map<string, any> = new Map();
 
   /**
@@ -129,7 +126,7 @@ export class IntentEngine {
    */
   recognize(input: string): Intent {
     const normalized = input.toLowerCase();
-    let bestMatch: IntentType = 'unknown';
+    let bestMatch: string = 'unknown';
     let maxConfidence = 0;
     const matchedKeywords: string[] = [];
 
@@ -151,7 +148,7 @@ export class IntentEngine {
         const confidence = Math.min(matchCount * 0.3 + 0.4, 0.95);
         if (confidence > maxConfidence) {
           maxConfidence = confidence;
-          bestMatch = intentType as IntentType;
+          bestMatch = intentType;
           matchedKeywords.length = 0;
           matchedKeywords.push(...keywords);
         }
@@ -165,7 +162,7 @@ export class IntentEngine {
     const toolChain = ToolChainMap[bestMatch];
 
     return {
-      type: bestMatch,
+      type: bestMatch as IntentType,
       confidence: maxConfidence,
       keywords: matchedKeywords,
       entities,
@@ -225,7 +222,7 @@ export class IntentEngine {
    * 获取执行计划描述
    */
   getPlanDescription(intent: Intent, plan: ToolChain): string {
-    const strategyDesc = {
+    const strategyDesc: Record<string, string> = {
       parallel: '并行执行',
       sequential: '顺序执行',
       iterative: '迭代执行',
@@ -281,6 +278,6 @@ ${intent.entities.topic ? `📌 **主题**: ${intent.entities.topic}` : ''}
 }
 
 // 导出单例
-const intentEngine = new IntentEngine();
+const intentEngineInstance = new IntentEngine();
 
-module.exports = { IntentEngine, intentEngine };
+module.exports = { IntentEngine, intentEngine: intentEngineInstance };

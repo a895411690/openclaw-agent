@@ -4,21 +4,18 @@
  * 参考: Claude Code Agent System
  */
 
-const { z } = require('zod');
+
 
 // ============ 类型定义 ============
 
-export const TaskStatus = z.enum([
-  'pending',      // 等待执行
-  'running',      // 执行中
-  'completed',    // 已完成
-  'failed',       // 失败
-  'cancelled',    // 已取消
-]);
+type TaskStatus = 
+  | 'pending'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'cancelled';
 
-export type TaskStatus = z.infer<typeof TaskStatus>;
-
-export interface Task {
+interface Task {
   id: string;
   parentId: string | null;
   type: 'research' | 'code' | 'debug' | 'review' | 'custom';
@@ -38,7 +35,7 @@ export interface Task {
   metadata: Record<string, any>;
 }
 
-export interface TaskQueue {
+interface TaskQueue {
   pending: Task[];
   running: Task[];
   completed: Task[];
@@ -47,7 +44,7 @@ export interface TaskQueue {
 
 // ============ TaskRuntime 类 ============
 
-export class TaskRuntime {
+class TaskRuntime {
   private tasks: Map<string, Task> = new Map();
   private queue: TaskQueue = {
     pending: [],
@@ -304,6 +301,7 @@ export class TaskRuntime {
 }
 
 // 导出单例
-const taskRuntime = new TaskRuntime();
-
-module.exports = { TaskRuntime, taskRuntime };
+module.exports = { 
+  TaskRuntime, 
+  taskRuntime: new TaskRuntime() 
+};
