@@ -1,4 +1,4 @@
-# 🦞 OpenClaw Agent v2.1
+# 🦞 OpenClaw Agent v2.2
 
 基于 Claude Code 架构的智能体系统 - 安全、高效、功能强大
 
@@ -13,6 +13,7 @@ OpenClaw Agent 是一个基于 Claude Code 2.1.88 架构的智能体系统，具
 - **功能扩展** - 丰富的专业技能和定时任务
 - **文件保护** - 防止配置文件被意外还原
 - **MCP 协议** - 完整的 Model Context Protocol 支持
+- **智能记忆** - 基于 Hindsight 架构的 Retain/Recall/Reflect 系统
 
 ---
 
@@ -102,6 +103,34 @@ npm run start
 6. **同步飞书数据** - 每 30 分钟执行
 7. **健康检查** - 每 5 分钟执行
 
+### 🧠 智能记忆系统
+
+基于 Hindsight 架构的增强记忆系统，实现了三大核心操作：
+
+1. **Retain (记忆保留)** - 自动保存重要的对话内容和经验
+   - 支持 5 种记忆类型：事实、经验、技能、决策、洞察
+   - 自动提取实体和生成标签
+   - 构建实体关系图谱
+   - 最多保存 10,000 条记忆
+
+2. **Recall (记忆回忆)** - 根据用户输入智能检索相关记忆
+   - 支持关键词、实体、标签、时间范围多维度检索
+   - 计算相关性分数并排序
+   - 记忆使用频率自动提升置信度
+   - 时间衰减机制保持记忆新鲜度
+
+3. **Reflect (记忆反思)** - 定期分析记忆并生成洞察
+   - 自动识别记忆模式和趋势
+   - 生成改进建议
+   - 记忆衰减和清理机制
+   - 智能合并和压缩相似记忆
+
+**特点**：
+- 实体关系网络构建
+- 记忆质量自动评估
+- 智能记忆优先级管理
+- 记忆导入/导出功能
+
 ### 🛡️ 文件保护系统
 
 - **Git 保护**: `.gitattributes` 防止合并覆盖
@@ -128,6 +157,7 @@ openclaw-agent/
 │   └── restore.sh             # 恢复脚本
 ├── src/                       # 源代码
 │   ├── core/                  # 核心模块
+│   │   ├── EnhancedMemorySystem.ts  # 增强记忆系统
 │   │   ├── SkillsManager.ts   # 技能管理器
 │   │   ├── ScheduledTasks.ts  # 定时任务管理器
 │   │   ├── IntentEngine.ts    # 意图识别引擎
@@ -279,6 +309,13 @@ cp backup/protected/security.json.<timestamp> config/security.json
 ---
 
 ## 📝 版本历史
+
+- **v2.2** - 2026-04-06
+  - 智能记忆：集成基于 Hindsight 架构的增强记忆系统
+  - Retain/Recall/Reflect 三大核心记忆操作
+  - 实体关系图谱构建
+  - 自动记忆分析和洞察生成
+  - 记忆导入/导出功能
 
 - **v2.1** - 2026-04-06
   - 安全加固：添加 groupPolicy 配置
