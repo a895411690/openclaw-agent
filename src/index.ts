@@ -7,6 +7,8 @@ const { intentEngine } = require('./core/IntentEngine');
 const { schemaValidator } = require('./core/SchemaValidator');
 const { taskRuntime } = require('./core/TaskRuntime');
 const { contextManager } = require('./core/ContextManager');
+const { skillsManager } = require('./core/SkillsManager');
+const { scheduledTasks } = require('./core/ScheduledTasks');
 
 // ============ OpenClawAgent 主类 ============
 
@@ -16,6 +18,8 @@ class OpenClawAgent {
   constructor() {
     // 初始化上下文
     contextManager.createSession();
+    // 启动定时任务
+    scheduledTasks.start();
     console.log(`🦞 OpenClaw Agent v${this.version} initialized`);
   }
 
@@ -117,12 +121,19 @@ class OpenClawAgent {
     sessionId: string | null;
     taskStats: ReturnType<typeof taskRuntime.getStats>;
     availableTools: string[];
+    skillsStats: any;
+    scheduledTasksStats: any;
   } {
     return {
       version: this.version,
       sessionId: contextManager.getCurrentSession()?.sessionId || null,
       taskStats: taskRuntime.getStats(),
       availableTools: schemaValidator.listTools(),
+      skillsStats: {
+        total: skillsManager.listSkills().length,
+        categories: skillsManager.listCategories(),
+      },
+      scheduledTasksStats: scheduledTasks.getStats(),
     };
   }
 }
@@ -133,14 +144,37 @@ async function main() {
   const agent = new OpenClawAgent();
 
   console.log('');
-  console.log('╔════════════════════════════════════════╗');
-  console.log('║     🦞 OpenClaw Agent v2.0             ║');
-  console.log('║     Claude Code Architecture           ║');
-  console.log('╚════════════════════════════════════════╝');
+  console.log('╔═══════════════════════════════════════════════════╗');
+  console.log('║     🦞 OpenClaw Agent v2.1                        ║');
+  console.log('║     安全加固 + 性能优化 + 功能扩展                 ║');
+  console.log('╚═══════════════════════════════════════════════════╝');
   console.log('');
 
   const status = agent.getStatus();
-  console.log('Status:', JSON.stringify(status, null, 2));
+  console.log('🔧 系统状态:');
+  console.log('  版本:', status.version);
+  console.log('  会话ID:', status.sessionId);
+  console.log('');
+  
+  console.log('🛠️  工具系统:');
+  console.log('  可用工具:', status.availableTools.length, '个');
+  console.log('');
+  
+  console.log('🎯 技能系统:');
+  console.log('  技能总数:', status.skillsStats.total);
+  console.log('  技能分类:', status.skillsStats.categories.join(', '));
+  console.log('');
+  
+  console.log('⏰ 定时任务:');
+  console.log('  任务总数:', status.scheduledTasksStats.total);
+  console.log('  已启用:', status.scheduledTasksStats.enabled);
+  console.log('  运行状态:', status.scheduledTasksStats.running ? '运行中' : '已停止');
+  console.log('');
+
+  console.log('✅ 增强功能已加载:');
+  console.log('  1. 安全加固 - groupPolicy 配置');
+  console.log('  2. 性能优化 - Token 和会话管理');
+  console.log('  3. 功能扩展 - 8个专业技能 + 7个定时任务');
   console.log('');
 
   // 演示：处理用户输入
@@ -155,7 +189,7 @@ async function main() {
     console.log(`\n📝 Input: "${input}"`);
     const result = await agent.process(input);
     console.log(result.plan);
-    console.log('─'.repeat(50));
+    console.log('─'.repeat(60));
   }
 }
 

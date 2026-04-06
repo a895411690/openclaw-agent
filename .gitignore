@@ -58,6 +58,9 @@ knowledge/
 output/
 
 # Configuration Files (Protected)
+config/security.json
+config/performance.json
+config/protection.json
 config/custom-*.json
 config/local-*.yaml
 .env

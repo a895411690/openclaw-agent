@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "description": "OpenClaw Agent 安全配置 - 复制此文件为 security.json 并修改配置",
+  "channels": {
+    "feishu": {
+      "groupPolicy": "allowlist",
+      "dmPolicy": "pairing",
+      "allowedGroups": [],
+      "allowedUsers": [],
+      "elevatedToolsRestricted": true
+    },
+    "wecom": {
+      "groupPolicy": "allowlist",
+      "dmPolicy": "pairing"
+    },
+    "weixin": {
+      "groupPolicy": "allowlist",
+      "dmPolicy": "pairing"
+    }
+  },
+  "toolPermissions": {
+    "elevatedTools": [
+      "bash",
+      "exec",
+      "file_write",
+      "file_edit",
+      "git_commit",
+      "git_push"
+    ],
+    "restrictedTools": [],
+    "defaultPolicy": "ask"
+  },
+  "rateLimit": {
+    "enabled": true,
+    "maxRequestsPerMinute": 60,
+    "maxTokensPerDay": 200000
+  }
+}

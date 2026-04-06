@@ -1,0 +1,46 @@
+# ========================================
+# OpenClaw 文件保护配置
+# 防止重要文件被 Git 合并覆盖
+# ========================================
+
+# 配置文件 - 合并时保留本地版本
+config/security.json merge=ours
+config/performance.json merge=ours
+config/protection.json merge=ours
+config/custom-*.json merge=ours
+
+# 环境变量文件 - 永远不合并
+.env merge=ours
+.env.local merge=ours
+.env.*.local merge=ours
+
+# 密钥文件 - 永远不合并
+secrets.json merge=ours
+
+# 用户数据目录 - 不跟踪
+data/** -merge
+custom/** -merge
+tasks/** -merge
+backup/** -merge
+
+# ========================================
+# 标准属性
+# ========================================
+
+# 文本文件
+*.js text=auto
+*.ts text=auto
+*.json text=auto
+*.md text=auto
+*.yaml text=auto
+*.yml text=auto
+
+# 二进制文件
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary

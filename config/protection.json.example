@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "description": "OpenClaw Agent 文件保护配置 - 复制此文件为 protection.json 并修改配置",
+  "protectedFiles": {
+    "gitIgnore": [
+      "config/security.json",
+      "config/performance.json",
+      "config/protection.json",
+      "config/custom-*.json",
+      ".env",
+      ".env.local",
+      "secrets.json",
+      "data/**",
+      "custom/**",
+      "tasks/**",
+      "backup/**"
+    ],
+    "gitAttributes": [
+      "config/security.json merge=ours",
+      "config/performance.json merge=ours",
+      "config/protection.json merge=ours",
+      "config/custom-*.json merge=ours",
+      ".env merge=ours",
+      ".env.local merge=ours",
+      "secrets.json merge=ours"
+    ]
+  },
+  "backupExclusions": [
+    "node_modules/",
+    "dist/",
+    "build/",
+    "*.log",
+    "tmp/",
+    "temp/"
+  ],
+  "restoreProtections": {
+    "confirmRequired": true,
+    "safetyBackup": true,
+    "dryRunFirst": false
+  },
+  "fileLocking": {
+    "enabled": false,
+    "lockFiles": [
+      "config/security.json",
+      "config/performance.json"
+    ]
+  }
+}

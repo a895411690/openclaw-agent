@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "description": "OpenClaw Agent 性能配置 - 复制此文件为 performance.json 并修改配置",
+  "tokenManagement": {
+    "maxContextTokens": 16000,
+    "maxResponseTokens": 4000,
+    "autoTrimContext": true,
+    "trimStrategy": "oldest_first",
+    "importantMessages": [
+      "system_prompt",
+      "tool_results"
+    ]
+  },
+  "sessionManagement": {
+    "maxActiveSessions": 10,
+    "sessionTTL": 86400000,
+    "autoCleanup": true,
+    "cleanupInterval": 3600000
+  },
+  "memoryManagement": {
+    "maxMemoryItems": 1000,
+    "memoryTTL": 604800000,
+    "autoCompress": true,
+    "compressThreshold": 0.8
+  },
+  "cache": {
+    "enabled": true,
+    "maxCacheSize": 100,
+    "cacheTTL": 300000
+  }
+}
